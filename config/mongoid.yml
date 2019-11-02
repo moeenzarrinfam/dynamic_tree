@@ -28,10 +28,10 @@ development:
         #     - use: web
 
         # The name of the user for authentication.
-        # user: 'user'
+        user: <%= ENV.fetch('MONGODB_USER', '') %>
 
         # The password of the user for authentication.
-        # password: 'password'
+        password: <%= ENV.fetch('MONGODB_PASSWORD', '') %>
 
         # The user's database roles.
         # roles:
@@ -162,3 +162,12 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
+production:
+  clients:
+    default:
+      database: <%= ENV.fetch('MONGODB_DATABASE', 'dynamic_tree_production') %>
+      hosts:
+        - <%= ENV.fetch('MONGODB_SERVER', 'localhost:27017') %>
+      options:
+        user: <%= ENV.fetch('MONGODB_USER', '') %>
+        password: <%= ENV.fetch('MONGODB_PASSWORD', '') %>

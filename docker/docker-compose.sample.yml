@@ -1,0 +1,23 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    restart: always
+    env_file:
+      - docker.env
+    network_mode: bridge
+  dynamic_tree_app:
+    image: dynamic_tree:latest
+    build: ../
+    container_name: dynamic_tree
+    command: app
+    env_file:
+      - docker.env
+    volumes:
+      - ./log:/var/www/app/log
+    ports:
+      - "8080:8080"
+    links:
+      - mongo
+    network_mode: bridge
+
