@@ -33,6 +33,8 @@ development:
         # The password of the user for authentication.
         password: <%= ENV.fetch('MONGODB_PASSWORD', '') %>
 
+        #
+        retry_writes: <%= ENV.fetch('MONGODB_DISABLE_RETRY_WRITES', nil).present? %>
         # The user's database roles.
         # roles:
         #   - 'dbOwner'

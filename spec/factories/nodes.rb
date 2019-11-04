@@ -22,9 +22,11 @@ FactoryBot.define do
     factory :tree do
       transient do
         size { 2 }
+        childs_count { 1 }
       end
       after :create do |node, options|
-        create(:tree, parent: node, size: (options.size - 1)) if options.size.positive?
+        create(:tree, parent: node, size: (options.size - 1), childs_count: options.childs_count) if options.size.positive?
+        create_list :singleton, options.childs_count - 1, parent: node
       end
     end
   end

@@ -7,7 +7,7 @@ RSpec.describe TreesController, type: :controller do
 
   describe '#show' do
     it 'shows an existing tree' do
-      get :show, params: { tree_id: tree.id }
+      get :show, params: { tree_id: tree.tree_id }
       expect(response).to have_http_status(:ok)
     end
 
@@ -18,16 +18,19 @@ RSpec.describe TreesController, type: :controller do
   end
 
   describe '#parents' do
-    it 'parents to root of existing node' do
-      get :parents, params: { tree_id: tree.id, id: tree.childs.first.ext_id }
-      expect('parents[0].id').to match_json(tree.ext_id)
+    it 'parents to root of existing node status' do
+      get :parents, params: { tree_id: tree.tree_id, id: tree.childs.first.ext_id }
       expect(response).to have_http_status(:ok)
     end
 
+    it 'parents to root of existing node' do
+      get :parents, params: { tree_id: tree.tree_id, id: tree.childs.first.ext_id }
+      expect('parents[0]').to match_json(tree.ext_id)
+    end
+
     it 'count parents to root of existing node' do
-      get :parents, params: { tree_id: tree.id, id: tree.childs.first.ext_id }
+      get :parents, params: { tree_id: tree.tree_id, id: tree.childs.first.ext_id }
       expect('length(parents)').to match_json(1)
-      expect(response).to have_http_status(:ok)
     end
 
     it 'error on showing parents of unexisting node' do
@@ -37,16 +40,14 @@ RSpec.describe TreesController, type: :controller do
   end
 
   describe '#childs' do
-    it 'childs of existing node' do
-      get :parents, params: { tree_id: tree.id, id: tree.ext_id }
-      expect('childs[0].id').to match_json(tree.childs.first.ext_id)
+    it 'childs of existing node status' do
+      get :childs, params: { tree_id: tree.tree_id, id: tree.ext_id }
       expect(response).to have_http_status(:ok)
     end
 
-    it 'count childs of existing node' do
-      get :parents, params: { tree_id: tree.id, id: tree.ext_id }
-      expect('length(childs)').to match_json(tree.childs.count)
-      expect(response).to have_http_status(:ok)
+    it 'childs of existing node' do
+      get :childs, params: { tree_id: tree.tree_id, id: tree.ext_id }
+      expect('childs[0]').to match_json(tree.childs.first.ext_id)
     end
 
     it 'error on showing childs of unexisting node' do
